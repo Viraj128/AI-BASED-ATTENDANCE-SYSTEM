@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Class List for {{ subject.subject_name }}</li>
+        </ol>
+    </nav>
+    <h2 class="mb-4">Class List</h2>
+    <div class="card">
+        <div class="card-header">Enrolled Students ({{ students|length }})</div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.user_id }}</td>
+                        <td>{{ student.name }}</td>
+                        <td>
+                            <a href="{{ url_for('student_history', subject_id=subject.id, student_id=student.user_id) }}" class="btn btn-sm btn-outline-info">View History</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3" class="text-center">No students are enrolled in this subject.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

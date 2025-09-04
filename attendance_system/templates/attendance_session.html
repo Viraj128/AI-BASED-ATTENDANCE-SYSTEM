@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Live Session: {{ subject.subject_name }}</li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manual Attendance</h2>
+        <!-- Button text changed for clarity -->
+        <a href="{{ url_for('session_report', subject_id=subject.id) }}" class="btn btn-success">End Session & View Report</a>
+    </div>
+
+    <!-- somewhere in attendance_session.html -->
+    <div class="card">
+      <div class="card-header">Live Recognition</div>
+      <div class="card-body">
+        <img id="video" src="{{ url_for('video_feed', subject_id=subject['id']) }}" style="max-width:100%; border:1px solid #ddd;">
+        <p class="mt-2">When a registered face blinks, attendance will be recorded automatically.</p>
+      </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-header">Enrolled Students</div>
+        <div class="list-group list-group-flush">
+            {% for student in enrolled_students %}
+                {% set status = attendance_status.get(student.user_id, 'Not Marked') %}
+                <div class="list-group-item d-flex justify-content-between align-items-center {% if status == 'Present' %}list-group-item-success{% elif status == 'Absent' %}list-group-item-danger{% endif %}">
+                    <span>{{ student.name }} (ID: {{ student.user_id }})</span>
+                    <div class="d-flex align-items-center">
+                        {% if status == 'Present' %}<span class="badge bg-success me-3">Present</span>
+                        {% elif status == 'Absent' %}<span class="badge bg-danger me-3">Absent</span>
+                        {% else %}<span class="badge bg-secondary me-3">Not Marked</span>
+                        {% endif %}
+                        <div class="btn-group">
+                            <form action="{{ url_for('attendance_session', subject_id=subject.id) }}" method="post" class="d-inline">
+                                <input type="hidden" name="student_id" value="{{ student.user_id }}">
+                                <button type="submit" name="status" value="Present" class="btn btn-sm btn-outline-success">Present</button>
+                            </form>
+                            <form action="{{ url_for('attendance_session', subject_id=subject.id) }}" method="post" class="d-inline">
+                                <input type="hidden" name="student_id" value="{{ student.user_id }}">
+                                <button type="submit" name="status" value="Absent" class="btn btn-sm btn-outline-danger">Absent</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="list-group-item">No students are enrolled in this subject.</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

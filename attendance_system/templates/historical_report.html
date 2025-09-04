@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Historical Reports for {{ subject.subject_name }}</li>
+        </ol>
+    </nav>
+    <h2 class="mb-4">View Historical Report</h2>
+
+    <div class="card mb-4">
+    <div class="card-header">Select Report Type</div>
+    <div class="card-body">
+        <!-- Daily Report Form -->
+        <form method="post" class="mb-3">
+            <h5>Daily Report</h5>
+            <input type="hidden" name="report_type" value="daily">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4"><label for="report_date" class="form-label">Select Date</label><input type="date" class="form-control" id="report_date" name="report_date" required></div>
+                <div class="col-md-auto"><button type="submit" class="btn btn-primary">Generate Daily Report</button></div>
+            </div>
+        </form>
+        <hr>
+        <!-- Monthly Report Form -->
+        <form method="post">
+            <h5>Monthly Report</h5>
+            <input type="hidden" name="report_type" value="monthly">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4"><label for="report_month" class="form-label">Select Month</label><input type="month" class="form-control" id="report_month" name="report_month" required></div>
+                <div class="col-md-auto"><button type="submit" class="btn btn-secondary">Generate Monthly Report</button></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if report_title %}
+<div class="row">
+    <!-- Chart Column (Only for Daily Reports) -->
+    {% if present_count > 0 or absent_count > 0 %}
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">Attendance Overview</div>
+            <div class="card-body"><canvas id="attendanceChart" data-present="{{ present_count }}" data-absent="{{ absent_count }}"></canvas></div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- Data Table Column -->
+    <div class="{% if present_count > 0 or absent_count > 0 %}col-lg-8{% else %}col-lg-12{% endif %}">
+        <div class="card">
+            <div class="card-header">Attendance Details for {{ report_title }}</div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead><tr>{% if 'Month' in report_title %}<th>Date</th>{% endif %}<th>Student Name</th><th>Status</th><th>Timestamp</th></tr></thead>
+                    <tbody>
+                        {% for record in report_data %}
+                        <tr>
+                            {% if 'Month' in report_title %}<td>{{ record.date }}</td>{% endif %}
+                            <td>{{ record.name }}</td>
+                            <td>
+                                {% if record.status == 'Present' %}<span class="badge bg-success">Present</span>
+                                {% elif record.status == 'Absent' %}<span class="badge bg-danger">Absent</span>
+                                {% else %}<span class="badge bg-secondary">{{ record.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ record.timestamp }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4" class="text-center">No attendance records found for this period.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chartCanvas = document.getElementById('attendanceChart');
+        if (chartCanvas) {
+            const presentCount = parseInt(chartCanvas.dataset.present, 10);
+            const absentCount = parseInt(chartCanvas.dataset.absent, 10);
+            new Chart(chartCanvas, { type: 'doughnut', data: { labels: ['Present', 'Absent'], datasets: [{ label: 'Students', data: [presentCount, absentCount], backgroundColor: ['rgba(25, 135, 84, 0.7)', 'rgba(220, 53, 69, 0.7)'], borderColor: ['rgba(25, 135, 84, 1)', 'rgba(220, 53, 69, 1)'], borderWidth: 1 }] }, options: { responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Attendance Distribution' } } } });
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

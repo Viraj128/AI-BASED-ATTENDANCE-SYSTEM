@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Add New Subject Form -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">Create New Subject</div>
+            <div class="card-body">
+                <form action="{{ url_for('manage_subjects') }}" method="post">
+                    <div class="mb-3">
+                        <label for="subject_name" class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="subject_name" name="subject_name" placeholder="e.g., Computer Science 101" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="teacher_id" class="form-label">Assign to Teacher</label>
+                        <select class="form-select" id="teacher_id" name="teacher_id" required>
+                            <option value="" disabled selected>Select a teacher...</option>
+                            {% for teacher in teachers %}
+                                <option value="{{ teacher.user_id }}">{{ teacher.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Create Subject</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing Subjects List -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">Existing Subjects</div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Subject Name</th>
+                            <th>Assigned Teacher</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                        <tr>
+                            <td>{{ subject.subject_name }}</td>
+                            <td>{{ subject.teacher_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

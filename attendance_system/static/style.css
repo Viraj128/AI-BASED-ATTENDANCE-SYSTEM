@@ -1,0 +1,84 @@
+/* General Body Styles */
+body {
+    background-color: #f8f9fa; /* A light grey background */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Navbar Customization */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* Main Content Wrapper */
+.main-content {
+    padding-top: 30px;
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,.05);
+    border-radius: 0.5rem; /* Softer corners */
+}
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e3e6f0;
+    font-weight: 600;
+    color: #0d6efd; /* Professional blue for titles */
+    display: flex;
+    align-items: center;
+}
+
+.card-header .fas {
+    margin-right: 10px;
+}
+
+/* Table Enhancements */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.95rem;
+}
+
+.table thead th {
+    background-color: #f1f5f9;
+    border: none;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5f9; /* Subtle hover effect */
+}
+
+/* Form Styling */
+.form-label {
+    font-weight: 500;
+}
+
+/* Footer Styling */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #6c757d; /* Muted text color */
+    border-top: 1px solid #e3e6f0;
+}
+
+.scrollable-box {
+max-height: 300px;
+overflow-y: auto;
+border: 1px solid #dee2e6; 
+padding: 1rem;
+border-radius: 0.25rem;
+}
+
+.form-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">Add New User</div>
+            <div class="card-body">
+                <form action="{{ url_for('add_user') }}" method="post">
+                    <div class="mb-3"><label for="user_id" class="form-label">User ID (Unique)</label><input type="text" class="form-control" id="user_id" name="user_id" required></div>
+                    <div class="mb-3"><label for="name" class="form-label">Full Name</label><input type="text" class="form-control" id="name" name="name" required></div>
+                    <div class="mb-3"><label for="role" class="form-label">Role</label><select class="form-select" id="role" name="role"><option value="student">Student</option><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+                    <div class="mb-3"><label for="password" class="form-label">Password</label><input type="password" class="form-control" id="password" name="password" required></div>
+                    <button type="submit" class="btn btn-primary w-100">Add User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">Registered Users</div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead><tr><th>User ID</th><th>Name</th><th>Role</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.user_id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td><span class="badge bg-secondary">{{ user.role|capitalize }}</span></td>
+                            <td>
+                                <a href="{{ url_for('edit_user', user_id=user.user_id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                {% if user.role == 'student' %}
+                                <a href="{{ url_for('enroll_user', user_id=user.user_id) }}" class="btn btn-sm btn-success">Enroll Face</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

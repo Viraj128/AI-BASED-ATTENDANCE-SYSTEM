@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+        </ol>
+    </nav>
+    <div class="card">
+        <div class="card-header">Edit User: {{ user.name }}</div>
+        <div class="mb-3">
+            <a class="btn btn-outline-success" href="{{ url_for('enroll_user', user_id=user.user_id) }}">Enroll / Update Face Photos</a>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                <div class="mb-3">
+                    <!-- FIX: Added label for the readonly input -->
+                    <label for="user_id_display" class="form-label">User ID (Cannot be changed)</label>
+                    <input type="text" id="user_id_display" class="form-control" value="{{ user.user_id }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="name_input" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name_input" name="name" value="{{ user.name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role_select" class="form-label">Role</label>
+                    <select class="form-select" id="role_select" name="role">
+                        <option value="student" {% if user.role == 'student' %}selected{% endif %}>Student</option>
+                        <option value="teacher" {% if user.role == 'teacher' %}selected{% endif %}>Teacher</option>
+                        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="password_input" class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="password_input" name="password" placeholder="Leave blank to keep current password">
+                </div>
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

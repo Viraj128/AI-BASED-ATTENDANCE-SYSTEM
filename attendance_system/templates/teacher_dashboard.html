@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="mb-4">Teacher Dashboard</h2>
+
+    <!-- Stat Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Subjects Taught</h5>
+                    <p class="card-text display-4">{{ stats.subject_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Total Unique Students</h5>
+                    <p class="card-text display-4">{{ stats.total_students }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Cards -->
+    <h4>Your Subjects</h4>
+    <div class="row">
+        {% for subject in subjects %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ subject.subject_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ subject.student_count }} student(s) enrolled</h6>
+                    <p class="card-text">Manage attendance and view reports for this subject.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <div class="btn-group w-100">
+                        <a href="{{ url_for('view_class_list', subject_id=subject.id) }}" class="btn btn-outline-secondary">Class List</a>
+                        <a href="{{ url_for('historical_report', subject_id=subject.id) }}" class="btn btn-outline-info">Reports</a>
+                        <a href="{{ url_for('attendance_session', subject_id=subject.id) }}" class="btn btn-primary">Start Live Session</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-warning">You are not assigned to any subjects yet.</div></div>
+        {% endfor %}
+    </div>
+{% endblock %}

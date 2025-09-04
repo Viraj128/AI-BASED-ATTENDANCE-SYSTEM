@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <!-- Add New User Form Column -->
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user-plus"></i>
+                    Add New User
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('add_user') }}" method="post">
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label">User ID (Unique Identifier)</label>
+                            <input type="text" class="form-control" id="user_id" name="user_id" placeholder="e.g., employee101" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="e.g., John Doe" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="department" class="form-label">Department</label>
+                            <input type="text" class="form-control" id="department" name="department" placeholder="e.g., Engineering">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-save"></i> Save User
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Users List Column -->
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list-ul"></i>
+                    Registered Users
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for user in users %}
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ user['name'] }}</h6>
+                                    <small>ID: {{ user['user_id'] }}</small>
+                                </div>
+                                <p class="mb-1 text-muted">Department: {{ user['department'] or 'N/A' }}</p>
+                            </div>
+                        {% else %}
+                            <div class="list-group-item text-center text-muted">No users found.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

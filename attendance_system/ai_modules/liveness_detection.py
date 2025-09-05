@@ -5,7 +5,7 @@ import dlib
 from scipy.spatial import distance as dist
 
 # You need shape_predictor_68_face_landmarks.dat -> download manually and place path here
-SHAPE_PREDICTOR_PATH = "models/shape_predictor_68_face_landmarks.dat"
+SHAPE_PREDICTOR_PATH = "c:/Users/viraj/Downloads/attendance_system/attendance_system/models/shape_predictor_68_face_landmarks.dat"
 
 detector = dlib.get_frontal_face_detector()
 predictor = None
